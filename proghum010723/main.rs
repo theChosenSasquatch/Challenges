@@ -9,14 +9,14 @@ const MAX_NUM: usize = 100;
 /// The length is MAX_NUM+7 because we need to cache the primes up to 100, plus look-aheads for the Difficult tier
 const CHECKS: [(&'static str, fn(usize, &mut [Option<bool>; MAX_NUM+7], &mut usize) -> bool); 6] = [
 	// Easy
-	("Fizz", |i, _, _| i % 3 == 0, ),
-	("Buzz", |i, _, _| i % 5 == 0, ),
+	("Fizz", |i, _, _| i % 3 == 0),
+	("Buzz", |i, _, _| i % 5 == 0),
 	// Intermediate
-	("Rizz", |i, _, _| i % 7 == 0, ),
-	("Jazz", |i, _, _| i % 11 == 0, ),
-	("Dizz", |i, _, _| (120 / i) * i == 120, ),
+	("Rizz", |i, _, _| i % 7 == 0),
+	("Jazz", |i, _, _| i % 11 == 0),
+	("Dizz", |i, _, _| (120 / i) * i == 120),
 	// Difficult
-	("Prizz", difficult, ),
+	("Prizz", difficult),
 ];
 
 fn main() {
