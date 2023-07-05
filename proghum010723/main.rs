@@ -7,16 +7,16 @@ const MAX_NUM: usize = 100;
 /// 
 /// `cache` is an array of tri-state `Option<bool>`s, where `None` means "not computed", `Some(true)` means "prime", and `Some(false)` means "not prime"
 /// The length is MAX_NUM+7 because we need to cache the primes up to 100, plus look-aheads for the Difficult tier
-const CHECKS: [(fn(usize, &mut [Option<bool>; MAX_NUM+7], &mut usize) -> bool, &'static str); 6] = [
+const CHECKS: [(&'static str, fn(usize, &mut [Option<bool>; MAX_NUM+7], &mut usize) -> bool); 6] = [
 	// Easy
-	(|i, _, _| i % 3 == 0, "Fizz"),
-	(|i, _, _| i % 5 == 0, "Buzz"),
+	("Fizz", |i, _, _| i % 3 == 0, ),
+	("Buzz", |i, _, _| i % 5 == 0, ),
 	// Intermediate
-	(|i, _, _| i % 7 == 0, "Rizz"),
-	(|i, _, _| i % 11 == 0, "Jazz"),
-	(|i, _, _| (120 / i) * i == 120, "Dizz"),
+	("Rizz", |i, _, _| i % 7 == 0, ),
+	("Jazz", |i, _, _| i % 11 == 0, ),
+	("Dizz", |i, _, _| (120 / i) * i == 120, ),
 	// Difficult
-	(difficult, "Prizz"),
+	("Prizz", difficult, ),
 ];
 
 fn main() {
@@ -24,7 +24,7 @@ fn main() {
 	let (mut primes, mut last_sqrt) = ([None; MAX_NUM+7], 1);
 	for i in 1..=MAX_NUM {
 		let mut has_printed = 0;
-		for (_, text) in CHECKS.iter().filter(|(check, _)| check(i, &mut primes, &mut last_sqrt)) {
+		for (text, _) in CHECKS.iter().filter(|(_, check)| check(i, &mut primes, &mut last_sqrt)) {
 			print!("{}", text);
 			has_printed = 1;
 		}
