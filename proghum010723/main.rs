@@ -18,12 +18,7 @@ fn main() {
 	// primes[0] is never accessed, but it's easier to just have it there
 	let mut cache: Cache = ([None; MAX_NUM+7], 1);
 	for i in 1..=MAX_NUM {
-		let mut has_printed = 0;
-		for (text, _) in CHECKS.iter().filter(|(_, check)| check(i, &mut cache)) {
-			print!("{}", text);
-			has_printed = 1;
-		}
-		println!("{}", [&i.to_string(),""][has_printed]);
+		println!("{}", [&i.to_string(),""][CHECKS.iter().filter(|(_, check)| check(i, &mut cache)).fold(0, |_, (y, _)| {print!("{y}"); 1})]);
 	}
 }
 
