@@ -23,14 +23,12 @@ fn main() {
 	// primes[0] is never accessed, but it's easier to just have it there
 	let (mut primes, mut last_sqrt) = ([None; MAX_NUM+7], 1);
 	for i in 1..=MAX_NUM {
-		let mut paren = false;
-		for check in CHECKS {
-			let res = check.0(i, &mut primes, &mut last_sqrt);
-			paren |= res;
-			// Avoid if statements by indexing into an array with the boolean instead
-			print!("{}", ["", check.1][res as usize]);
+		let mut has_printed = 0;
+		for (_, text) in CHECKS.iter().filter(|(check, _)| check(i, &mut primes, &mut last_sqrt)) {
+			print!("{}", text);
+			has_printed = 1;
 		}
-		println!("{}", [&i.to_string(),""][paren as usize]);
+		println!("{}", [&i.to_string(),""][has_printed]);
 	}
 }
 
@@ -69,9 +67,7 @@ mod test {
 		}
 		assert_eq!(last_sqrt, 10);
 
-		assert_eq!(primes.iter().enumerate().filter_map(|(i, x)| if x == &Some(true) {Some(i)} else {None}).collect::<Vec<usize>>(), vec![2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
-			31, 37, 41, 43, 47, 53, 59, 61, 67, 71,
-			73, 79, 83, 89, 97]);
-
+		assert_eq!(primes.iter().enumerate().filter_map(|(i, x)| if x == &Some(true) {Some(i)} else {None}).collect::<Vec<usize>>(), 
+			vec![2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]);
 	}
 }
