@@ -10,21 +10,6 @@ const CHECKS: [(fn(usize, (&mut [Option<bool>; MAX_NUM+11], &mut usize)) -> bool
 
 const MAX_NUM: usize = 100;
 
-fn difficult(i: usize, cache: (&mut [Option<bool>; MAX_NUM+11], &mut usize)) -> bool {
-	let prepop_max = (i+1..).find(|x| x % 11 == 0 || x % 7 == 0).expect("How did this overflow??") - 1;
-
-	!(i+1..=prepop_max).any(|x| check_prime(x, cache.0, cache.1)) && cache.0[i] == Some(true)
-}
-
-fn check_prime(i: usize, primes: &mut [Option<bool>; MAX_NUM+11], last_sqrt: &mut usize) -> bool {
-	// increment the sqrt if it's too low
-	*last_sqrt += ((*last_sqrt+1).pow(2) <= i) as usize;
-
-	// Check every number lower than the sqrt. if it divides, it's not prime
-	let ret = [(2..=*last_sqrt).find(|j| i % j == 0), Some(0)][(*last_sqrt == i) as usize];
-	ret.map_or_else(|| {primes[i] = Some(true); true}, |_| false)
-}
-
 fn main() {
 	let (mut primes, mut last_sqrt) = ([None; MAX_NUM+11], 1);
 	for i in 1..=MAX_NUM {
@@ -40,6 +25,25 @@ fn main() {
 		#[cfg(debug_assertions)]
 		println!("{}", [&i.to_string(),&format!(" ({})", &i.to_string())][paren as usize]);
 	}
+}
+
+
+fn difficult(i: usize, cache: (&mut [Option<bool>; MAX_NUM+11], &mut usize)) -> bool {
+	let prepop_max = (i+1..).find(|x| x % 11 == 0 || x % 7 == 0).expect("How did this overflow??");
+
+	!(i+1..prepop_max).any(|x| check_prime(x, cache.0, cache.1)) && check_prime(i, cache.0, cache.1)
+}
+
+fn check_prime(i: usize, primes: &mut [Option<bool>; MAX_NUM+11], last_sqrt: &mut usize) -> bool {
+	// increment the sqrt if it's too low
+	*last_sqrt += ((*last_sqrt+1).pow(2) <= i) as usize;
+
+	// Get the cached result, or compute it
+	let ret = primes[i].or(Some([(2..=*last_sqrt).find(|j| i % j == 0), Some(0)][(*last_sqrt == i) as usize].is_none()));
+
+	// Reset the cache. Technically inefficient, but not a good way to do this without if statements
+	primes[i] = ret;
+	ret.unwrap()
 }
 
 #[cfg(test)]
