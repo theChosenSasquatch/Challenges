@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [[bin]]
+name = "primes"
+path = "primes/primes.rs"
+
+[[bin]]
 name = "fizzbuzz_easymed"
 path = "proghum010723/easy_med.rs"
 
