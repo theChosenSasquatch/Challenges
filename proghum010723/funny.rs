@@ -1,7 +1,4 @@
-use std::sync::OnceLock;
 use regex::Regex;
-
-const MAX_NUM: usize = 100;
 
 const CHECKS: [(&str, fn(usize) -> bool); 6] = [
 	("Fizz", |i| i % 3 == 0),
@@ -13,8 +10,8 @@ const CHECKS: [(&str, fn(usize) -> bool); 6] = [
 ];
 
 fn difficult(i: usize) -> bool {
-	static PRIMES: OnceLock<Vec<usize>> = OnceLock::new();
-	let primes = PRIMES.get_or_init(|| download_primes());
+	static PRIMES: std::sync::OnceLock<Vec<usize>> = std::sync::OnceLock::new();
+	let primes = PRIMES.get_or_init(download_primes);
 	primes.binary_search(&i).map(|x| (primes[x]+1..).find(|x| x % 7 == 0 || x % 11 == 0).unwrap() <= primes[x+1]) == Ok(true)
 }
 
@@ -24,5 +21,5 @@ fn download_primes() -> Vec<usize> {
 }
 
 fn main() {
-	(1..=MAX_NUM).map(|i| println!("{}", [&i.to_string(),""][CHECKS.iter().filter(|(_, check)| check(i)).fold(0, |_, (y, _)| {print!("{y}"); 1})])).count();
+	(1..=100).map(|i| println!("{}", [&i.to_string(),""][CHECKS.iter().filter(|(_, check)| check(i)).fold(0, |_, (y, _)| {print!("{y}"); 1})])).count();
 }
