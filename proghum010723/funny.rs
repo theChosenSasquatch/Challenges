@@ -24,7 +24,5 @@ fn download_primes() -> Vec<usize> {
 }
 
 fn main() {
-	for i in 1..=MAX_NUM {
-		println!("{}", [&i.to_string(),""][CHECKS.iter().filter(|(_, check)| check(i)).fold(0, |_, (y, _)| {print!("{y}"); 1})])
-	}
+	(1..=MAX_NUM).map(|i| println!("{}", [&i.to_string(),""][CHECKS.iter().filter(|(_, check)| check(i)).fold(0, |_, (y, _)| {print!("{y}"); 1})])).count();
 }
