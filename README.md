@@ -11,5 +11,6 @@ cargo run --release --bin <bin_name>
 where `<bin_name>` is the name of a binary within this project. Valid values are:
 
 - `fizzbuzz`: Discord's "r/ProgrammerHumer" Weekly Challege, from July 1st, 2023
+- `primes`: Just a quick tangent, trying to find 40 million primes as efficiently as possible
 
 You can also probably paste into the [Rust Playground](play.rust-lang.org), with minor edits for any solutions spanning multiple files.
