@@ -8,8 +8,8 @@ name = "primes"
 path = "primes/primes.rs"
 
 [[bin]]
-name = "fizzbuzz_easymed"
-path = "proghum010723/easy_med.rs"
+name = "fizzbuzz_funny"
+path = "proghum010723/funny.rs"
 
 [[bin]]
 name = "fizzbuzz"
@@ -18,3 +18,5 @@ path = "proghum010723/main.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+regex = "1.9.0"
+reqwest = { version = "0.11.18", features = ["blocking"] }
